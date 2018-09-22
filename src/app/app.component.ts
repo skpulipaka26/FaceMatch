@@ -26,6 +26,7 @@ export class AppComponent implements OnInit {
   image2: File;
   comparing: boolean;
   video: HTMLVideoElement;
+  currentContainer: number;
   @ViewChild('swalRef') private swal: SwalComponent;
   @ViewChild('videoElement') videoElement: ElementRef;
 
@@ -34,20 +35,59 @@ export class AppComponent implements OnInit {
   ngOnInit() {
   }
 
-  async onCapture(cameraTemplate: TemplateRef<any>) {
-    this.dialog.open(cameraTemplate);
+  async onCapture(captureImageRef: TemplateRef<any>, container: number) {
+    this.dialog.open(captureImageRef);
     this.video = document.getElementById('video') as HTMLVideoElement;
-    const mediaStream = await navigator.mediaDevices.getUserMedia({ video: true });
-    this.video.srcObject = mediaStream;
-    this.video.onclick = this.videoClickHandler;
+    const config = { video: true, audio: false };
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia(config);
+      this.video.srcObject = stream;
+      this.video.play();
+      this.video.onclick = this.videoClickHandler;
+      this.currentContainer = container;
+    } catch (error) {
+      console.log('error');
+    }
+  }
+
+  async onCaptureImage() {
+    this.video.click();
   }
 
   onClick() {
     this.video.click();
   }
 
+  onCloseVideoCapture() {
+    this.stop(this.video.srcObject);
+  }
+
   videoClickHandler = () => {
-    console.log('YOLO');
+    const videoSnap = this.video;
+    const canvas = document.createElement('canvas');
+    canvas.width = videoSnap.videoWidth;
+    canvas.height = videoSnap.videoHeight;
+    const ctx = canvas.getContext('2d');
+    ctx.drawImage(videoSnap, 0, 0);
+    canvas.toBlob(async (b) => {
+      const file = new File([b], `imageRef.jpg`, { type: 'image/jpeg' });
+      if (this.currentContainer === 0) {
+        this.image1 = file;
+        this.image1URI = await this.getImageURI(file);
+      } else {
+        this.image2 = file;
+        this.image2URI = await this.getImageURI(file);
+      }
+    });
+    this.dialog.closeAll();
+    this.onCloseVideoCapture();
+  }
+
+  stop(stream) {
+    if (!stream) {
+      return;
+    }
+    stream.getTracks().forEach(track => track.stop());
   }
 
   showImage(container: number) {

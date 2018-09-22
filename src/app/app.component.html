@@ -32,7 +32,7 @@
             <button class="btn">upload</button>
             <input type="file" name="myfile" (change)="uploadFile($event, cont)">
           </div>
-          <button (click)="onCapture(cameraTemplateRef)" class="btn btn-secondary mb-2">capture</button>
+          <button (click)="onCapture(cameraTemplateRef, cont)" class="btn btn-secondary mb-2">capture</button>
         </div>
 
       </div>
@@ -57,6 +57,6 @@
     <video id="video" preload autoplay loop muted></video>
   </mat-dialog-content>
   <mat-dialog-actions style="display: flex; justify-content: flex-end;">
-    <button class="btn btn-secondary">Click</button>
+    <button class="btn btn-secondary" (click)="onCaptureImage()">click</button>
   </mat-dialog-actions>
 </ng-template>
