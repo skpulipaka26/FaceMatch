@@ -1,7 +1,7 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, ViewChild, ElementRef, OnInit } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 
-import { Observable, forkJoin } from 'rxjs';
+import { Observable, forkJoin, of } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 
 import { environment } from '../environments/environment';
@@ -16,16 +16,34 @@ import { SweetAlertOptions } from 'sweetalert2';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
 
   image1: File;
   image1URI: string;
   image2URI: string;
   image2: File;
   comparing: boolean;
+  video: HTMLVideoElement;
   @ViewChild('swalRef') private swal: SwalComponent;
+  @ViewChild('videoElement') videoElement: ElementRef;
 
   constructor(private http: HttpClient) { }
+
+  ngOnInit() {
+  }
+
+  onCapture() {
+    const videoRef = this.videoElement.nativeElement as HTMLVideoElement;
+    if (navigator.mediaDevices.getUserMedia) {
+      navigator.mediaDevices.getUserMedia({ video: true })
+        .then(function (stream) {
+          videoRef.srcObject = stream;
+        })
+        .catch(function (err0r) {
+          console.log('Something went wrong!');
+        });
+    }
+  }
 
   showImage(container: number) {
     if (container === 0) {

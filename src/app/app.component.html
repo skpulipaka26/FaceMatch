@@ -29,7 +29,7 @@
             <button class="btn">upload</button>
             <input type="file" name="myfile" (change)="uploadFile($event, cont)">
           </div>
-          <!-- <button class="btn btn-secondary mb-2">capture</button> -->
+          <!-- <button  (click)="onCapture()" class="btn btn-secondary mb-2">capture</button> -->
         </div>
 
       </div>
@@ -39,7 +39,8 @@
 
   <div class="row my-2">
     <div class="col-12 d-flex justify-content-center">
-      <button [disabled]="comparing || !image1 || !image2" class="btn btn-primary" (click)="onCompare()">{{comparing ? 'comparing...': 'compare'}}</button>
+      <button [disabled]="comparing || !image1 || !image2" class="btn btn-primary" (click)="onCompare()">{{comparing ?
+        'comparing...': 'compare'}}</button>
     </div>
   </div>
 
