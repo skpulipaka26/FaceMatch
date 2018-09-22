@@ -5,6 +5,7 @@
 </nav>
 
 <div class="container-fluid">
+
   <div class="row my-3">
     <div class="col-12 d-flex justify-content-center">
       <h1>face match</h1>
@@ -13,48 +14,36 @@
       <p class="text-muted">this app does not store your images</p>
     </div>
   </div>
+
   <div class="row mx-2">
-    <div class="col-md-6 col-sm-12 d-flex justify-content-center mb-3">
-      <div style="width: 100%; height: 75vh; border: 2px dashed grey;">
+    <div class="col-md-6 col-sm-12 d-flex mb-3" *ngFor="let cont of [0 ,1]">
 
-        <div style="display: flex; height: 100%;">
+      <div class="row" style="width: 100%; min-height: 65vh; border: 2px dashed grey;">
 
-          <div class="align-self-start">
-            <!-- This is the image container -->
+        <div class="col-12" style="align-items: center; display: flex; justify-content: center;">
+          <img *ngIf="showImage(cont)" [src]="getImageSource(cont)" class="img-fluid" style="max-height: 60vh;">
+        </div>
+
+        <div class="col-12 mt-1" style="align-self: flex-end;" align="right">
+          <div class="upload-btn-wrapper mb-2">
+            <button class="btn">upload</button>
+            <input type="file" name="myfile" (change)="uploadFile($event, cont)">
           </div>
-
-          <div class="align-self-end" style="width: 100%; text-align: center;">
-            <div class="upload-btn-wrapper mb-2">
-              <button class="btn">upload</button>
-              <input type="file" name="myfile" (change)="uploadFile($event)">
-            </div>
-            <button class="btn btn-secondary mb-2">capture</button>
-          </div>
-
+          <!-- <button class="btn btn-secondary mb-2">capture</button> -->
         </div>
 
       </div>
     </div>
-    <div class="col d-flex justify-content-center mb-3">
-      <div style="width: 100%; height: 75vh; border: 2px dashed grey;">
 
-        <div style="display: flex; height: 100%;">
+  </div>
 
-          <div class="align-self-start">
-            <!-- This is the image container -->
-          </div>
-
-          <div class="align-self-end" style="width: 100%; text-align: center;">
-            <div class="upload-btn-wrapper mb-2">
-              <button class="btn">upload</button>
-              <input type="file" name="myfile" />
-            </div>
-            <button class="btn btn-secondary mb-2">capture</button>
-          </div>
-
-        </div>
-
-      </div>
+  <div class="row my-2">
+    <div class="col-12 d-flex justify-content-center">
+      <button [disabled]="comparing || !image1 || !image2" class="btn btn-primary" (click)="onCompare()">{{comparing ? 'comparing...': 'compare'}}</button>
     </div>
   </div>
+
 </div>
+
+
+<swal #swalRef [focusCancel]="true"></swal>
