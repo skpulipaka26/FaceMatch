@@ -5,12 +5,56 @@
 </nav>
 
 <div class="container-fluid">
-  <div class="row my-5">
-    <div class="col d-flex justify-content-center">
-      <h1>Original Image</h1>
+  <div class="row my-3">
+    <div class="col-12 d-flex justify-content-center">
+      <h1>face match</h1>
     </div>
-    <div class="col d-flex justify-content-center">
-      <h1>Comparison Image</h1>
+    <div class="col-12 d-flex justify-content-center">
+      <p class="text-muted">this app does not store your images</p>
+    </div>
+  </div>
+  <div class="row mx-2">
+    <div class="col-md-6 col-sm-12 d-flex justify-content-center mb-3">
+      <div style="width: 100%; height: 75vh; border: 2px dashed grey;">
+
+        <div style="display: flex; height: 100%;">
+
+          <div class="align-self-start">
+            <!-- This is the image container -->
+          </div>
+
+          <div class="align-self-end" style="width: 100%; text-align: center;">
+            <div class="upload-btn-wrapper mb-2">
+              <button class="btn">upload</button>
+              <input type="file" name="myfile" (change)="uploadFile($event)">
+            </div>
+            <button class="btn btn-secondary mb-2">capture</button>
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+    <div class="col d-flex justify-content-center mb-3">
+      <div style="width: 100%; height: 75vh; border: 2px dashed grey;">
+
+        <div style="display: flex; height: 100%;">
+
+          <div class="align-self-start">
+            <!-- This is the image container -->
+          </div>
+
+          <div class="align-self-end" style="width: 100%; text-align: center;">
+            <div class="upload-btn-wrapper mb-2">
+              <button class="btn">upload</button>
+              <input type="file" name="myfile" />
+            </div>
+            <button class="btn btn-secondary mb-2">capture</button>
+          </div>
+
+        </div>
+
+      </div>
     </div>
   </div>
 </div>
