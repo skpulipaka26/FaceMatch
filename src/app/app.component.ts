@@ -131,8 +131,10 @@ export class AppComponent implements OnInit {
     this.comparing = true;
     const faceDetect1$ = this.faceDetect(this.image1);
     const faceDetect2$ = this.faceDetect(this.image2);
+    let detectRes: Array<Array<IFaceDetectRes>>;
     forkJoin(faceDetect1$, faceDetect2$).pipe(
       switchMap(res => {
+        detectRes = res;
         const faceId1 = res[0][0].faceId;
         const faceId2 = res[1][0].faceId;
         const httpOptions = {
@@ -154,13 +156,18 @@ export class AppComponent implements OnInit {
         swalOptions = {
           title: `match`,
           text: `confidence: ${v.confidence * 100} %`,
-          type: 'success'
+          type: 'success',
+          confirmButtonText: 'great'
         };
       } else {
+        const gender1 = detectRes[0][0].faceAttributes.gender;
+        const gender2 = detectRes[1][0].faceAttributes.gender;
         swalOptions = {
-          title: `not a match`,
+          // title: gender1 === gender2 ? 'not a match' : `${gender1} != ${gender2}`,
+          title: gender1 === gender2 ? 'not a match' : `are you bruce/caitlyn jenner?`,
           text: null,
-          type: 'error'
+          type: 'error',
+          confirmButtonText: 'lol'
         };
       }
       this.swal.options = swalOptions;
@@ -170,7 +177,8 @@ export class AppComponent implements OnInit {
       const swalOptions: SweetAlertOptions = {
         title: 'fatal error occured, try again',
         text: null,
-        type: 'error'
+        type: 'error',
+        confirmButtonText: 'grrr'
       };
       this.swal.options = swalOptions;
       this.swal.show();
@@ -185,7 +193,8 @@ export class AppComponent implements OnInit {
       })
     };
     return this.http
-      .post('https://westus.api.cognitive.microsoft.com/face/v1.0/detect?returnFaceId=true&returnFaceLandmarks=false',
+      .post(`https://westus.api.cognitive.microsoft.com/face/v1.0/detect?
+      returnFaceId=true&returnFaceLandmarks=false&returnFaceAttributes=gender`,
         file, httpOptions) as Observable<Array<IFaceDetectRes>>;
   }
 

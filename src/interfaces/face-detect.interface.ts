@@ -1,6 +1,7 @@
 export interface IFaceDetectRes {
     faceId: string;
     faceRectangle: FaceRectangle;
+    faceAttributes: FaceAttribute;
 }
 
 export interface FaceRectangle {
@@ -8,4 +9,8 @@ export interface FaceRectangle {
     left: number;
     width: number;
     height: number;
+}
+
+export interface FaceAttribute {
+    gender: string;
 }
