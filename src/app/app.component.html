@@ -11,6 +11,9 @@
       <h1>face match</h1>
     </div>
     <div class="col-12 d-flex justify-content-center">
+      <p class="text-muted">for best results compare images with one face</p>
+    </div>
+    <div class="col-12 d-flex justify-content-center">
       <p class="text-muted">this app does not store your images</p>
     </div>
   </div>
@@ -29,7 +32,7 @@
             <button class="btn">upload</button>
             <input type="file" name="myfile" (change)="uploadFile($event, cont)">
           </div>
-          <!-- <button  (click)="onCapture()" class="btn btn-secondary mb-2">capture</button> -->
+          <button (click)="onCapture(cameraTemplateRef)" class="btn btn-secondary mb-2">capture</button>
         </div>
 
       </div>
@@ -48,3 +51,12 @@
 
 
 <swal #swalRef [focusCancel]="true"></swal>
+
+<ng-template #cameraTemplateRef>
+  <mat-dialog-content>
+    <video id="video" preload autoplay loop muted></video>
+  </mat-dialog-content>
+  <mat-dialog-actions style="display: flex; justify-content: flex-end;">
+    <button class="btn btn-secondary">Click</button>
+  </mat-dialog-actions>
+</ng-template>

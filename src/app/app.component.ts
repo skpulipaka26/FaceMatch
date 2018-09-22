@@ -1,8 +1,10 @@
-import { Component, ViewChild, ElementRef, OnInit } from '@angular/core';
+import { Component, ViewChild, ElementRef, OnInit, TemplateRef } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 
-import { Observable, forkJoin, of } from 'rxjs';
+import { Observable, forkJoin } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
+
+import { MatDialog } from '@angular/material/dialog';
 
 import { environment } from '../environments/environment';
 
@@ -27,22 +29,25 @@ export class AppComponent implements OnInit {
   @ViewChild('swalRef') private swal: SwalComponent;
   @ViewChild('videoElement') videoElement: ElementRef;
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, public dialog: MatDialog) { }
 
   ngOnInit() {
   }
 
-  onCapture() {
-    const videoRef = this.videoElement.nativeElement as HTMLVideoElement;
-    if (navigator.mediaDevices.getUserMedia) {
-      navigator.mediaDevices.getUserMedia({ video: true })
-        .then(function (stream) {
-          videoRef.srcObject = stream;
-        })
-        .catch(function (err0r) {
-          console.log('Something went wrong!');
-        });
-    }
+  async onCapture(cameraTemplate: TemplateRef<any>) {
+    this.dialog.open(cameraTemplate);
+    this.video = document.getElementById('video') as HTMLVideoElement;
+    const mediaStream = await navigator.mediaDevices.getUserMedia({ video: true });
+    this.video.srcObject = mediaStream;
+    this.video.onclick = this.videoClickHandler;
+  }
+
+  onClick() {
+    this.video.click();
+  }
+
+  videoClickHandler = () => {
+    console.log('YOLO');
   }
 
   showImage(container: number) {
